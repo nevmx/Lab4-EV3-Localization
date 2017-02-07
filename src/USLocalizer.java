@@ -2,13 +2,16 @@ import lejos.robotics.SampleProvider;
 
 public class USLocalizer {
 	public enum LocalizationType { FALLING_EDGE, RISING_EDGE };
-	public static double ROTATION_SPEED = 30;
+	public static int ROTATION_SPEED = 30;
 	private static int FILTER_OUT = 5;
+	private static int UPPER_NOISE_BOUND = 110;
+	private static int LOWER_NOISE_BOUND = 100;
 
 	private Odometer odo;
 	private SampleProvider usSensor;
 	private float[] usData;
 	private LocalizationType locType;
+	private Navigation navigation;
 	private int filterControl;
 	private float distance;
 	
@@ -17,6 +20,7 @@ public class USLocalizer {
 		this.usSensor = usSensor;
 		this.usData = usData;
 		this.locType = locType;
+		this.navigation = new Navigation(odo);
 		filterControl = 0;
 		distance = 0;
 	}
@@ -24,21 +28,73 @@ public class USLocalizer {
 	public void doLocalization() {
 		double [] pos = new double [3];
 		double angleA, angleB;
+		double deltaTheta = 0.0;
+		
+		boolean robotIsFacingWall = getFilteredData() < ((UPPER_NOISE_BOUND + LOWER_NOISE_BOUND)/2.0);
 		
 		if (locType == LocalizationType.FALLING_EDGE) {
+			
 			// rotate the robot until it sees no wall
+			navigation.setSpeeds(ROTATION_SPEED, -ROTATION_SPEED);
+			while (robotIsFacingWall) {
+				// Robot will keep rotating until it no longer faces the wall
+				if (getFilteredData() > UPPER_NOISE_BOUND) {
+					robotIsFacingWall = false;
+				}
+			}
+			
+			boolean wasWithinMargin = false;
+			double angleOne = 0.0;
+			double angleTwo = 0.0;
 			
 			// keep rotating until the robot sees a wall, then latch the angle
+			while (!robotIsFacingWall) {
+				float distance = getFilteredData();
+				if (wasWithinMargin && distance < LOWER_NOISE_BOUND) {
+					angleTwo = odo.getAng();
+					robotIsFacingWall = true;
+				} else if (distance < UPPER_NOISE_BOUND) {
+					wasWithinMargin = true;
+					angleOne = odo.getAng();
+				}
+			}
+			
+			angleA = (angleOne + angleTwo)/2.0;
 			
 			// switch direction and wait until it sees no wall
+			navigation.setSpeeds(-ROTATION_SPEED, ROTATION_SPEED);
+			while (robotIsFacingWall) {
+				// Robot will keep rotating until it no longer faces the wall
+				if (getFilteredData() > UPPER_NOISE_BOUND) {
+					robotIsFacingWall = false;
+				}
+			}
+			
+			wasWithinMargin = false;
 			
 			// keep rotating until the robot sees a wall, then latch the angle
+			while (!robotIsFacingWall) {
+				float distance = getFilteredData();
+				if (wasWithinMargin && distance < LOWER_NOISE_BOUND) {
+					angleTwo = odo.getAng();
+					robotIsFacingWall = true;
+				} else if (distance < UPPER_NOISE_BOUND) {
+					wasWithinMargin = true;
+					angleOne = odo.getAng();
+				}
+			}
+			navigation.setSpeeds(0, 0);
+			angleB = (angleOne + angleTwo)/2.0;
 			
 			// angleA is clockwise from angleB, so assume the average of the
 			// angles to the right of angleB is 45 degrees past 'north'
 			
-			// update the odometer position (example to follow:)
-			odo.setPosition(new double [] {0.0, 0.0, 0.0}, new boolean [] {true, true, true});
+			if (angleA < angleB) {
+				deltaTheta = 45.0 - (angleA + angleB) / 2.0;
+			} else {
+				deltaTheta = 225.0 - (angleA + angleB) / 2.0;
+			}
+			
 		} else {
 			/*
 			 * The robot should turn until it sees the wall, then look for the
@@ -51,6 +107,7 @@ public class USLocalizer {
 			// FILL THIS IN
 			//
 		}
+		odo.setPosition(new double[] {0.0, 0.0, Odometer.fixDegAngle(odo.getAng() + deltaTheta)}, new boolean[] {false, false, true}); 
 	}
 	
 	private float getFilteredData() {
