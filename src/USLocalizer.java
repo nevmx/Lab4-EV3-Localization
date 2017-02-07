@@ -103,9 +103,57 @@ public class USLocalizer {
 			 * will face toward the wall for most of it.
 			 */
 			
-			//
-			// FILL THIS IN
-			//
+			navigation.setSpeeds(ROTATION_SPEED, -ROTATION_SPEED);
+			
+			while (!robotIsFacingWall) {
+				if (getFilteredData() < LOWER_NOISE_BOUND) {
+					robotIsFacingWall = true;
+				}
+			}
+			
+			double angleOne = 0.0;
+			double angleTwo = 0.0;
+			boolean wasWithinMargin = false;
+			
+			while (robotIsFacingWall) {
+				float distance = getFilteredData();
+				if (wasWithinMargin && distance > UPPER_NOISE_BOUND) {
+					angleTwo = odo.getAng();
+					robotIsFacingWall = false;
+				} else if (distance > LOWER_NOISE_BOUND) {
+					wasWithinMargin = true;
+					angleOne = odo.getAng();
+				}
+			}
+			
+			angleA = (angleOne + angleTwo)/2.0;
+			navigation.setSpeeds(-ROTATION_SPEED, ROTATION_SPEED);
+			
+			while (!robotIsFacingWall) {
+				if (getFilteredData() < LOWER_NOISE_BOUND) {
+					robotIsFacingWall = true;
+				}
+			}
+			
+			while (robotIsFacingWall) {
+				float distance = getFilteredData();
+				if (wasWithinMargin && distance > UPPER_NOISE_BOUND) {
+					angleTwo = odo.getAng();
+					robotIsFacingWall = false;
+				} else if (distance > LOWER_NOISE_BOUND) {
+					wasWithinMargin = true;
+					angleOne = odo.getAng();
+				}
+			}
+			
+			angleB = (angleOne + angleTwo)/2.0;
+			navigation.setSpeeds(0, 0);
+			
+			if (angleA < angleB) {
+				deltaTheta = 225.0 - (angleA + angleB) / 2.0;
+			} else {
+				deltaTheta = 45.0 - (angleA + angleB) / 2.0;
+			}
 		}
 		odo.setPosition(new double[] {0.0, 0.0, Odometer.fixDegAngle(odo.getAng() + deltaTheta)}, new boolean[] {false, false, true}); 
 	}
