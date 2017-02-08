@@ -5,6 +5,8 @@ public class LightLocalizer {
 	private static final double COLOR_SENSOR_RADIUS = 11.5;
 	private static final int ROTATION_SPEED = 60;
 	private static final double COLOR_SENSOR_BOUND = 0.40;
+	private static final double START_TURN_TO = 45.0;
+	private static final double START_GO_FORWARD = 13.0;
 	
 	private Odometer odo;
 	private SampleProvider colorSensor;
@@ -20,8 +22,8 @@ public class LightLocalizer {
 	
 	public void doLocalization() {
 		// drive to location listed in tutorial
-		navigation.turnTo(45.0, true);
-		navigation.goForward(10.0);
+		navigation.turnTo(START_TURN_TO, true);
+		navigation.goForward(START_GO_FORWARD);
 		
 		double finalX = 0.0;
 		double finalY = 0.0;
