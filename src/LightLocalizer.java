@@ -4,7 +4,7 @@ import lejos.robotics.SampleProvider;
 public class LightLocalizer {
 	private static final double COLOR_SENSOR_RADIUS = 11.5;
 	private static final int ROTATION_SPEED = 60;
-	private static final double COLOR_SENSOR_BOUND = 0.14;
+	private static final double COLOR_SENSOR_BOUND = 0.40;
 	
 	private Odometer odo;
 	private SampleProvider colorSensor;
@@ -47,7 +47,7 @@ public class LightLocalizer {
 				angleOne = odo.getAng();
 			}
 			
-			if (this.colorData[0] > this.COLOR_SENSOR_BOUND && sensorAboveLine) {
+			else if (this.colorData[0] > this.COLOR_SENSOR_BOUND && sensorAboveLine) {
 				angleTwo = odo.getAng();
 				angles[clockedLines++] = (angleOne + angleTwo)/2.0;
 				sensorAboveLine = false;
