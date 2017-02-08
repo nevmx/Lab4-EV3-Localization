@@ -122,6 +122,7 @@ public class USLocalizer {
 			while (!robotIsFacingWall) {
 				if (getFilteredData() < LOWER_NOISE_BOUND) {
 					robotIsFacingWall = true;
+					Sound.twoBeeps();
 				}
 			}
 			
@@ -134,6 +135,7 @@ public class USLocalizer {
 				if (wasWithinMargin && distance > UPPER_NOISE_BOUND) {
 					angleTwo = odo.getAng();
 					robotIsFacingWall = false;
+					Sound.beep();
 				} else if (distance > LOWER_NOISE_BOUND) {
 					wasWithinMargin = true;
 					angleOne = odo.getAng();
@@ -146,6 +148,7 @@ public class USLocalizer {
 			while (!robotIsFacingWall) {
 				if (getFilteredData() < LOWER_NOISE_BOUND) {
 					robotIsFacingWall = true;
+					Sound.twoBeeps();
 				}
 			}
 			
@@ -156,6 +159,7 @@ public class USLocalizer {
 				if (wasWithinMargin && distance > UPPER_NOISE_BOUND) {
 					angleTwo = odo.getAng();
 					robotIsFacingWall = false;
+					Sound.beep();
 				} else if (distance > LOWER_NOISE_BOUND) {
 					wasWithinMargin = true;
 					angleOne = odo.getAng();
