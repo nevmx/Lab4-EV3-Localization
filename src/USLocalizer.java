@@ -20,11 +20,6 @@ public class USLocalizer {
 	private int filterControl;
 	private float distance;
 	
-	// temp
-	public double angleA = 0.0;
-	public double angleB = 0.0;
-	public double deltaTheta = 0.0;
-	
 	public USLocalizer(Odometer odo,  SampleProvider usSensor, float[] usData, LocalizationType locType) {
 		this.odo = odo;
 		this.usSensor = usSensor;
@@ -37,8 +32,8 @@ public class USLocalizer {
 	
 	public void doLocalization() {
 		double [] pos = new double [3];
-		//double angleA, angleB;
-		//double deltaTheta = 0.0;
+		double angleA, angleB;
+		double deltaTheta = 0.0;
 		
 		boolean robotIsFacingWall = getFilteredData() < ((UPPER_NOISE_BOUND + LOWER_NOISE_BOUND)/2.0);
 		
