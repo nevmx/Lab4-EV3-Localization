@@ -35,12 +35,20 @@ public class USLocalizer {
 		double angleA, angleB;
 		double deltaTheta = 0.0;
 		
+		navigation.setSpeeds(-ROTATION_SPEED, ROTATION_SPEED);
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		boolean robotIsFacingWall = getFilteredData() < ((UPPER_NOISE_BOUND + LOWER_NOISE_BOUND)/2.0);
 		
 		if (locType == LocalizationType.FALLING_EDGE) {
 			
-			// rotate the robot until it sees no wall
-			navigation.setSpeeds(-ROTATION_SPEED, ROTATION_SPEED);
+			// rotate the robot until it sees no wall			
 			while (robotIsFacingWall) {
 				// Robot will keep rotating until it no longer faces the wall
 				if (getFilteredData() > UPPER_NOISE_BOUND) {
@@ -124,9 +132,7 @@ public class USLocalizer {
 			 * This is very similar to the FALLING_EDGE routine, but the robot
 			 * will face toward the wall for most of it.
 			 */
-			
-			navigation.setSpeeds(-ROTATION_SPEED, ROTATION_SPEED);
-			
+						
 			while (!robotIsFacingWall) {
 				if (getFilteredData() < LOWER_NOISE_BOUND) {
 					robotIsFacingWall = true;

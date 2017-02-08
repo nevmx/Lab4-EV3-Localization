@@ -6,7 +6,8 @@ public class LightLocalizer {
 	private static final int ROTATION_SPEED = 60;
 	private static final double COLOR_SENSOR_BOUND = 0.40;
 	private static final double START_TURN_TO = 45.0;
-	private static final double START_GO_FORWARD = 13.0;
+	private static final double START_GO_FORWARD = 15.0;
+	private static final double ANGLE_CORRECTION = - 8;
 	
 	private Odometer odo;
 	private SampleProvider colorSensor;
@@ -80,7 +81,7 @@ public class LightLocalizer {
 		
 		// Theta
 		double deltaTheta = 270 + (thetaX/2.0) - angles[0];
-		finalTheta = odo.getAng() + deltaTheta;
+		finalTheta = odo.getAng() + deltaTheta + ANGLE_CORRECTION;
 		
 		if (finalTheta > 180.0) {
 			finalTheta -= 180.0;
