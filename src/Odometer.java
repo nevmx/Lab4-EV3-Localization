@@ -83,7 +83,7 @@ public class Odometer implements TimerListener {
 		rightTacho = rightMotor.getTachoCount();
 
 		data[0] = (leftTacho * leftRadius + rightTacho * rightRadius) * Math.PI / 360.0;
-		data[1] = (rightTacho * rightRadius - leftTacho * leftRadius) / width;
+		data[1] = (leftTacho * leftRadius - rightTacho * rightRadius) / width;
 	}
 	
 	/*

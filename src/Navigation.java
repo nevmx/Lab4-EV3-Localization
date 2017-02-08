@@ -12,7 +12,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 public class Navigation {
 	final static int FAST = 200, SLOW = 100, ACCELERATION = 4000;
-	final static double DEG_ERR = 3.0, CM_ERR = 1.0;
+	final static double DEG_ERR = 15.0, CM_ERR = 1.0;
 	private Odometer odometer;
 	private EV3LargeRegulatedMotor leftMotor, rightMotor;
 
@@ -90,7 +90,7 @@ public class Navigation {
 	public void turnTo(double angle, boolean stop) {
 
 		double error = angle - this.odometer.getAng();
-
+		
 		while (Math.abs(error) > DEG_ERR) {
 
 			error = angle - this.odometer.getAng();
@@ -104,6 +104,7 @@ public class Navigation {
 			} else {
 				this.setSpeeds(-SLOW, SLOW);
 			}
+			
 		}
 
 		if (stop) {

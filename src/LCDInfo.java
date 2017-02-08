@@ -8,6 +8,7 @@ public class LCDInfo implements TimerListener{
 	private Odometer odo;
 	private Timer lcdTimer;
 	private TextLCD LCD = LocalEV3.get().getTextLCD();;
+	private USLocalizer loc;
 	
 	// arrays for displaying data
 	private double [] pos;
@@ -23,6 +24,10 @@ public class LCDInfo implements TimerListener{
 		lcdTimer.start();
 	}
 	
+	public void setLoc(USLocalizer loc) {
+		this.loc = loc;
+	}
+	
 	public void timedOut() { 
 		odo.getPosition(pos);
 		LCD.clear();
@@ -32,5 +37,12 @@ public class LCDInfo implements TimerListener{
 		LCD.drawInt((int)(pos[0] * 10), 3, 0);
 		LCD.drawInt((int)(pos[1] * 10), 3, 1);
 		LCD.drawInt((int)pos[2], 3, 2);
+		LCD.drawString("Alpha: ", 0, 4);
+		LCD.drawString("Beta: ", 0, 5);
+		LCD.drawString("Delta: ", 0, 6);
+		
+		LCD.drawInt((int)loc.angleA, 7, 4);
+		LCD.drawInt((int)loc.angleB, 7, 5);
+		LCD.drawInt((int)loc.deltaTheta, 7, 6);
 	}
 }
