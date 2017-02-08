@@ -104,9 +104,9 @@ public class USLocalizer {
 			// angles to the right of angleB is 45 degrees past 'north'
 			
 			if (angleA < angleB) {
-				deltaTheta = 225.0 - ((angleA + angleB) / 2.0);
-			} else {
 				deltaTheta = 45.0 - ((angleA + angleB) / 2.0);
+			} else {
+				deltaTheta = 225.0 - ((angleA + angleB) / 2.0);
 			}
 			
 		} else {
@@ -172,7 +172,7 @@ public class USLocalizer {
 			}
 		}
 		odo.setPosition(new double[] {0.0, 0.0, Odometer.fixDegAngle(odo.getAng() + deltaTheta)}, new boolean[] {false, false, true});
-		navigation.turnTo(0, true);
+		navigation.turnTo(0.0, true);
 	}
 	
 	private float getFilteredData() {

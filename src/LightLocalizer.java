@@ -2,9 +2,9 @@ import lejos.hardware.Sound;
 import lejos.robotics.SampleProvider;
 
 public class LightLocalizer {
-	private static final double COLOR_SENSOR_RADIUS = 10;
+	private static final double COLOR_SENSOR_RADIUS = 11.5;
 	private static final int ROTATION_SPEED = 60;
-	private static final double COLOR_SENSOR_BOUND = 0.40;
+	private static final double COLOR_SENSOR_BOUND = 0.14;
 	
 	private Odometer odo;
 	private SampleProvider colorSensor;
@@ -20,7 +20,7 @@ public class LightLocalizer {
 	
 	public void doLocalization() {
 		// drive to location listed in tutorial
-		navigation.turnTo(45, true);
+		navigation.turnTo(45.0, true);
 		navigation.goForward(10.0);
 		
 		double finalX = 0.0;
