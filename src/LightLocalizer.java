@@ -88,6 +88,8 @@ public class LightLocalizer {
 		// when done travel to (0,0) and turn to 0 degrees
 		navigation.travelTo(0.0, 0.0);
 		navigation.turnTo(0.0, true);
+		
+		odo.setPosition(new double[] {0.0,  0.0, 0.0}, new boolean[] {true, true, false});
 	}
 
 }

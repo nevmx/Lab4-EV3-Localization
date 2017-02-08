@@ -166,9 +166,9 @@ public class USLocalizer {
 			navigation.setSpeeds(0, 0);
 			
 			if (angleA < angleB) {
-				deltaTheta = 45.0 - ((angleA + angleB) / 2.0);
-			} else {
 				deltaTheta = 225.0 - ((angleA + angleB) / 2.0);
+			} else {
+				deltaTheta = 45.0 - ((angleA + angleB) / 2.0);
 			}
 		}
 		odo.setPosition(new double[] {0.0, 0.0, Odometer.fixDegAngle(odo.getAng() + deltaTheta)}, new boolean[] {false, false, true});
