@@ -173,7 +173,6 @@ public class USLocalizer {
 		}
 		odo.setPosition(new double[] {0.0, 0.0, Odometer.fixDegAngle(odo.getAng() + deltaTheta)}, new boolean[] {false, false, true});
 		navigation.turnTo(0, true);
-		navigation.setFloat();
 	}
 	
 	private float getFilteredData() {

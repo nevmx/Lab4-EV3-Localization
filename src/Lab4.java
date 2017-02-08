@@ -48,6 +48,7 @@ public class Lab4 {
 		usl.doLocalization();
 		
 		Button.waitForAnyPress();
+		usl = null;
 		
 		// perform the light sensor localization
 		LightLocalizer lsl = new LightLocalizer(odo, colorValue, colorData);
