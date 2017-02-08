@@ -74,6 +74,14 @@ public class USLocalizer {
 			
 			// switch direction and wait until it sees no wall
 			navigation.setSpeeds(ROTATION_SPEED, -ROTATION_SPEED);
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			while (robotIsFacingWall) {
 				// Robot will keep rotating until it no longer faces the wall
 				if (getFilteredData() > UPPER_NOISE_BOUND) {
@@ -144,6 +152,14 @@ public class USLocalizer {
 			
 			angleA = (angleOne + angleTwo)/2.0;
 			navigation.setSpeeds(ROTATION_SPEED, -ROTATION_SPEED);
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			
 			while (!robotIsFacingWall) {
 				if (getFilteredData() < LOWER_NOISE_BOUND) {
